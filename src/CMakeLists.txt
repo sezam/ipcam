@@ -30,7 +30,7 @@ set (SOURCE  ${COMMON_SRC})
 
 find_package(Boost 1.72.0 REQUIRED COMPONENTS program_options)
 find_package(Threads REQUIRED)
-find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED COMPONENTS core imgcodecs videoio)
 
 #Финальный штрих и сборка.
 add_executable(${PACKAGE_TARNAME} ${SOURCE})
@@ -38,4 +38,6 @@ add_executable(${PACKAGE_TARNAME} ${SOURCE})
 target_link_libraries(${PACKAGE_TARNAME}
     Boost::program_options 
     opencv_core
+    opencv_imgcodecs
+    opencv_videoio
 )

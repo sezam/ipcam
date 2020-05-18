@@ -22,8 +22,9 @@ void IpcamSession::get_photo()
 {
     int read_buf_len = 100;
     char* read_buf = (char*)malloc(read_buf_len);
+    memset(read_buf, 0, read_buf_len);
 
-    boolean step = true;
+    bool step = true;
     size_t io_len = 0;
     boost::system::error_code err = error::would_block;
 
@@ -89,6 +90,10 @@ void IpcamSession::get_photo()
         send_buf[7] = (send_buf_len & 0xFF);
         io_len = socket_.write_some(buffer(send_buf, 8), err);
         step = (!err && io_len == 8);
+
+        if(step) io_len = socket_.write_some(buffer(base64, base64_len), err);
+        step = (!err && io_len == base64_len);
+
         if (!step)  cout << "ipcam (" << ipcam_name_ << "): send data error" << endl;
     }
 
