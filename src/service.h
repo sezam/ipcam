@@ -11,9 +11,12 @@ public:
     IpcamSession(io_service& io_service, string ipcam_name, string ipcam_url);
     ~IpcamSession();
     tcp::socket& socket();
-    void get_photo();
+    void do_work();
 
 private:
+    string get_photo();
+    string get_status();
+
     tcp::socket socket_;
     io_service& io_service_;
     string ipcam_url_;
