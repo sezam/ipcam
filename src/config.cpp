@@ -8,7 +8,7 @@ void load_settings(char* path, function<void(string, string, int)> action)
 
 	read_ini(ifs, pt);
 
-	if (pt.empty) cout << "ipcam: error read config file" << endl;
+	if (pt.empty()) cout << "ipcam: error read config file" << endl;
 
 	for (auto& section : pt)
 	{
