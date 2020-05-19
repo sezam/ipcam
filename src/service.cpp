@@ -5,13 +5,13 @@ IpcamSession::IpcamSession(io_service& io_service, string ipcam_name, string ipc
 	: socket_(io_service), io_service_(io_service),
 	ipcam_url_(ipcam_url), ipcam_name_(ipcam_name)
 {
-	cout << "ipcam (" << ipcam_name_ << "): open session for socket: " << socket().native_handle() << endl;
+	//cout << "ipcam (" << ipcam_name_ << "): open session for socket" << endl;
 }
 
 IpcamSession::~IpcamSession()
 {
 	socket().close();
-	cout << "ipcam (" << ipcam_name_ << "): close session for socket: " << socket().native_handle() << endl;
+	//cout << "ipcam (" << ipcam_name_ << "): close session for socket" << endl;
 }
 
 tcp::socket& IpcamSession::socket()
@@ -94,13 +94,8 @@ string IpcamSession::get_photo()
 	std::vector<uchar> buff;
 	if (step)
 	{
-		cv::Mat image = cv::Mat(GLOBALWIDTH, GLOBALHEIGTH, CV_8UC3);
-		cv::transpose(frame, image);
-		cv::flip(image, image, 1);
-		step = cv::imencode(".jpg", image, buff);
+		step = cv::imencode(".jpg", frame, buff);
 		if (!step) cout << "ipcam (" << ipcam_name_ << "): error convert frame to image" << endl;
-
-		image.release();
 	}
 	frame.release();
 
