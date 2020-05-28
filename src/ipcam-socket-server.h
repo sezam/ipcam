@@ -65,28 +65,9 @@ using boost::property_tree::ptree;
 #define GLOBALWIDTH 640
 #define GLOBALHEIGTH 480
 
-static const string response_format_photo = R"(
-    {"Device":"%s", 
-        "Response":
-        {
-            "TypeResponse": "GetPhoto",
-            "Result": "%s",
-            "Text": "%s",
-            "Data": "%s"
-        }
-    }
-)";
+static const string response_format_photo = R"({"Device":"%s","Response":{"TypeResponse":"GetPhoto","Result":"%s","Text":"%s","Data":"%s"}})";
 
-static const string response_format_status = R"(
-    {"Device":"%s", 
-        "Response":
-        {
-            "TypeResponse": "GetStatus",
-            "Status": "%s",
-            "Enabled": "True"
-        }
-    }
-)";
+static const string response_format_status = R"({"Device":"%s","Response":{"TypeResponse":"GetStatus","Status":"%s","Enabled":"True"}})";
 
 
 void load_settings(char* path, function<void(string, string, int)> action);
