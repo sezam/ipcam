@@ -38,6 +38,6 @@ sudo yum install ffmpeg ffmpeg-devel
 #test ffmpeg installation
 ffmpeg -version
 
-#test
+#test service
 echo GetStatus | nc localhost 9091
 echo GetPhoto | nc localhost 9091
