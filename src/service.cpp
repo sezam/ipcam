@@ -50,6 +50,8 @@ void IpcamSession::do_work()
 	{
 		size_t send_buf_len = send_data.length();
 
+		cout << send_data.substr(1, 100) << " .. " << send_data.substr(send_buf_len - 10, 10) << " len:" << send_buf_len << endl;
+
 		unsigned char send_buf[8];
 		send_buf[0] = 'p';
 		send_buf[1] = 'a';

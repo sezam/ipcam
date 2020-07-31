@@ -9,6 +9,7 @@ int main(int argc, char* argv[])
 	{
 		load_settings(argv[1], [&](string name, string url, int sock)
 			{
+				std::cout << "config: " << argv[1] << endl;
 				std::cout << "name=" << name << endl;
 				std::cout << "url=" << url << endl;
 				std::cout << "socket=" << sock << endl;
