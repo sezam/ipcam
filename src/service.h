@@ -21,6 +21,7 @@ private:
     io_service& io_service_;
     string ipcam_url_;
     string ipcam_name_;
+    cv::VideoCapture vcap_;
 };
 
 class SocketServer

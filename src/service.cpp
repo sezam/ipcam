@@ -3,15 +3,15 @@
 
 IpcamSession::IpcamSession(io_service& io_service, string ipcam_name, string ipcam_url)
 	: socket_(io_service), io_service_(io_service),
-	ipcam_url_(ipcam_url), ipcam_name_(ipcam_name)
+	ipcam_url_(ipcam_url), ipcam_name_(ipcam_name), vcap_()
 {
-	//cout << "ipcam (" << ipcam_name_ << "): open session for socket" << endl;
+	if (!vcap_.open(ipcam_url_)) cout << "ipcam (" << ipcam_name_ << "): open cam url error" << endl;
 }
 
 IpcamSession::~IpcamSession()
 {
 	socket().close();
-	//cout << "ipcam (" << ipcam_name_ << "): close session for socket" << endl;
+	vcap_.release();
 }
 
 tcp::socket& IpcamSession::socket()
@@ -75,23 +75,21 @@ void IpcamSession::do_work()
 
 string IpcamSession::get_photo()
 {
-	bool step = true;
 	string json;
 
-	cv::VideoCapture vcap;
-	if (step)
+	bool step = vcap_.isOpened();
+	if (!step)
 	{
-		step = vcap.open(ipcam_url_);
+		step = vcap_.open(ipcam_url_);
 		if (!step) cout << "ipcam (" << ipcam_name_ << "): open cam url error" << endl;
 	}
 
 	cv::Mat frame;
 	if (step)
 	{
-		step = vcap.read(frame);
+		step = vcap_.read(frame);
 		if (!step) cout << "ipcam (" << ipcam_name_ << "): frames not grabbed" << endl;
 	}
-	vcap.release();
 
 	std::vector<uchar> buff;
 	if (step)
@@ -124,11 +122,18 @@ string IpcamSession::get_photo()
 
 string IpcamSession::get_status()
 {
-	cv::VideoCapture vcap;
+	bool step = vcap_.isOpened();
+	if (!step)
+	{
+		step = vcap_.open(ipcam_url_);
+		if (!step) cout << "ipcam (" << ipcam_name_ << "): open cam url error" << endl;
+	}
 
-	bool step = vcap.open(ipcam_url_);
-	if (!step) cout << "ipcam (" << ipcam_name_ << "): open cam url error" << endl;
-	vcap.release();
+	if (step)
+	{
+		step = vcap_.grab();
+		if (!step) cout << "ipcam (" << ipcam_name_ << "): open cam url error" << endl;
+	}
 
 	return (boost::format(response_format_status) % ipcam_name_ % (step ? "True" : "False")).str();
 }
